@@ -1,0 +1,11 @@
+Flask==2.3.3
+requests==2.31.0
+langchain==0.0.318
+sentence-transformers
+Gunicorn
+protobuf
+python-docx
+faiss-cpu
+transformers
+grpcio
+google-generativeai
