@@ -2,9 +2,8 @@ from flask import Flask, jsonify, render_template, request
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 import google.generativeai as genai
-
 from langchain.prompts import PromptTemplate
-
+import os
 
 embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2",
@@ -12,7 +11,13 @@ embeddings = HuggingFaceEmbeddings(
         encode_kwargs={'normalize_embeddings': True}
     )
 
-genai.configure(api_key="AIzaSyDMOC1kuWVNsYlrT5VcMSiPIzqyA-JYsV8")
+# Fetch the API key from the environment
+api_key = os.getenv("GOOGLE_API_KEY")
+
+if not api_key:
+    raise EnvironmentError("Missing `GOOGLE_API_KEY` environment variable. Please set it in the environment.")
+
+genai.configure(api_key=api_key)
 llm = genai.GenerativeModel("gemini-1.5-flash")
 
 def ask_question(query: str, airline_context: str = None) -> str:
